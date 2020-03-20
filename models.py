@@ -36,7 +36,7 @@ class UserModel(db.Model):
             num_rows_deleted = db.session.query(cls).delete()
             num_models_deleted = db.session.query(ModelsModel).delete()
             db.session.commit()
-            folder = r'static\users_galleries'
+            folder = r'static\users_models'
             for the_file in os.listdir(folder):
                 file_path = os.path.join(folder, the_file)
                 if os.path.isfile(file_path):
