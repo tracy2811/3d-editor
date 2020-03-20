@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 api = Api(app)
 
+api.add_resource(resources.BasePage, '/')
 api.add_resource(resources.UserRegistration, '/registration')
 api.add_resource(resources.UserLogin, '/login')
 api.add_resource(resources.UserLogoutAccess, '/logout')
@@ -17,6 +18,7 @@ api.add_resource(resources.AllUsers, '/users')
 api.add_resource(resources.GetSphere, '/sphere')
 api.add_resource(resources.UploadButton, '/upload')
 api.add_resource(resources.GetDonut, '/donut')
+api.add_resource(resources.SecretResource, '/secret')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///models.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

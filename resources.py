@@ -1,17 +1,15 @@
-import os.path
-
 from flask_restful import Resource, reqparse
 from werkzeug.datastructures import FileStorage
 from datetime import timedelta
-from flask import send_from_directory, Response, make_response, get_template_attribute, request
+from flask import send_from_directory, Response, make_response, get_template_attribute, request, redirect
 import models
 import os
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required,
                                 jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
 auth_parser = reqparse.RequestParser()
-auth_parser.add_argument('username', help='This field cannot be blank', location='form');#, required=True)
-auth_parser.add_argument('password', help='This field cannot be blank', location='form')#, required=True)
+auth_parser.add_argument('username', help='This field cannot be blank', location='form', required=True)
+auth_parser.add_argument('password', help='This field cannot be blank', location='form', required=True)
 
 model_rename_parser = reqparse.RequestParser()
 model_rename_parser.add_argument('id', help='This field cannot be blank', required=True)
@@ -24,6 +22,21 @@ model_download_parser = reqparse.RequestParser()
 model_download_parser.add_argument('model', type=FileStorage, location='files')
 model_download_parser.add_argument('name', help='This field cannot be blank', required=True)
 
+
+class BasePage(Resource):
+    def get(self):
+        content = get_file('base_page.html')
+        return Response(content, mimetype="text/html")
+
+    def post(self):
+        if request.form['button'] == 'Registration':
+            redirect('http://localhost:5000/registration', code=302)
+            content = get_file('registration_page.html')
+            return Response(content, mimetype="text/html")
+        elif request.form['button'] == 'Login':
+            redirect('http://localhost:5000/login', code=302)
+            content = get_file('login_page.html')
+            return Response(content, mimetype="text/html")
 
 class UserRegistration(Resource):
     def get(self):
@@ -45,17 +58,12 @@ class UserRegistration(Resource):
         )
 
         new_user.save_to_db()
-        print('User created')
         access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
         refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
-        print('Tokens generated')
         os.mkdir(r'static/users_models/{}'.format(data['username']))
         template = get_template_attribute('success_registration.html', 'success_registration')
-        print('Template generated')
         resp = make_response(template(data['username']))
-        print('Response created')
         resp.set_cookie(data['username'], access_token)
-        print('Cookies set')
         return resp
         try:
             new_user.save_to_db()
