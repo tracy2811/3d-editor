@@ -57,23 +57,12 @@ class UserRegistration(Resource):
             password=models.UserModel.generate_hash(data['password'])
         )
 
-        new_user.save_to_db()
-        access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
-        refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
-        os.mkdir(r'static/users_models/{}'.format(data['username']))
-        template = get_template_attribute('success_registration.html', 'success_registration')
-        resp = make_response(template(data['username']))
-        resp.set_cookie(data['username'], access_token)
-        return Response(status=200) #resp
         try:
             new_user.save_to_db()
             access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
             refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
             os.mkdir(r'static/users_models/{}'.format(data['username']))
-            template = get_template_attribute('success_registration.html', 'success_registration')
-            resp = make_response(template(data['username']))
-            resp.set_cookie(data['username'], access_token)
-            return Response(status=200)
+            return {'token': access_token}, 200
         except:
             return Response(status=500) #{'message': 'Something went wrong'}, 500
 
@@ -96,10 +85,7 @@ class UserLogin(Resource):
         if models.UserModel.verify_hash(data['password'], current_user.password):
             access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
             refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
-            template = get_template_attribute('success_login.html', 'success_login')
-            resp = make_response(template(data['username']))
-            resp.set_cookie(data['username'], access_token)
-            return Response(status=200)
+            return {'token': access_token}, 200
         else:
             return Response(status=401)
 
