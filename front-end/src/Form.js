@@ -25,8 +25,9 @@ export default function Form({ setUser, }) {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} className="bg-light rounded p-3 my-4 mx-auto shadow-lg">
+		<form onSubmit={handleSubmit} className="bg-transparent text-white rounded p-3 my-4 mx-auto shadow-lg">
 			<h2 className="text-center">{form.login ? 'Login' : 'Register'}</h2>
+
 			<div className="form-group">
 			<label>Username</label>
 			<input type="text" name="username" className="form-control" placeholder="demo"/>
@@ -44,7 +45,7 @@ export default function Form({ setUser, }) {
 			}
 			<button type="submit" className="btn btn-dark btn-block">{form.login ? 'Login' : 'Register'}</button>
 
-			<hr/>
+			<hr />
 			<button onClick={handleClick} type="button" className="btn btn-link text-info">{form.login ? 'Register' : 'Login'}</button>
 		</form>
 	);
