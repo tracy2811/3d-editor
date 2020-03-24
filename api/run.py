@@ -3,8 +3,10 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 import models, resources
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 api = Api(app)
 
@@ -46,4 +48,4 @@ def create_tables():
 
 if __name__ == '__main__':
     models.create_base()
-    app.run('localhost', 5000, debug=True)
+    app.run('localhost', 8000, debug=True)

@@ -50,32 +50,21 @@ class UserRegistration(Resource):
         refresh_token_expiration_time = timedelta(days=7)
 
         if models.UserModel.find_by_username(data['username']):
-            return {'message': 'User {} already exists'.format(data['username'])}
+            return Response(status=409) #{'message': 'User {} already exists'.format(data['username'])}
 
         new_user = models.UserModel(
             username=data['username'],
             password=models.UserModel.generate_hash(data['password'])
         )
 
-        new_user.save_to_db()
-        access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
-        refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
-        os.mkdir(r'static/users_models/{}'.format(data['username']))
-        template = get_template_attribute('success_registration.html', 'success_registration')
-        resp = make_response(template(data['username']))
-        resp.set_cookie(data['username'], access_token)
-        return resp
         try:
             new_user.save_to_db()
             access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
             refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
             os.mkdir(r'static/users_models/{}'.format(data['username']))
-            template = get_template_attribute('success_registration.html', 'success_registration')
-            resp = make_response(template(data['username']))
-            resp.set_cookie(data['username'], access_token)
-            return resp
+            return {'token': access_token}, 200
         except:
-            return {'message': 'Something went wrong'}, 500
+            return Response(status=500) #{'message': 'Something went wrong'}, 500
 
 
 class UserLogin(Resource):
@@ -85,22 +74,20 @@ class UserLogin(Resource):
 
     def post(self):
         data = auth_parser.parse_args()
+        print(data)
         access_token_expiration_time = timedelta(minutes=5)
         refresh_token_expiration_time = timedelta(days=1)
         current_user = models.UserModel.find_by_username(data['username'])
 
         if not current_user:
-            return {'message': 'User {} doesn\'t exist'.format(data['username'])}
+            return Response(status=401) #{'message': 'User {} doesn\'t exist'.format(data['username'])}
 
         if models.UserModel.verify_hash(data['password'], current_user.password):
             access_token = create_access_token(identity=data['username'], expires_delta=access_token_expiration_time)
             refresh_token = create_refresh_token(identity=data['username'], expires_delta=refresh_token_expiration_time)
-            template = get_template_attribute('success_login.html', 'success_login')
-            resp = make_response(template(data['username']))
-            resp.set_cookie(data['username'], access_token)
-            return resp
+            return {'token': access_token}, 200
         else:
-            return {'message': 'Wrong credentials'}
+            return Response(status=401)
 
 
 class UserLogoutAccess(Resource):
