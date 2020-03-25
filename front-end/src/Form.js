@@ -30,12 +30,12 @@ export default function Form({ setUser, }) {
 
 			<div className="form-group">
 			<label>Username</label>
-			<input type="text" name="username" className="form-control" placeholder="demo"/>
+			<input type="text" name="username" className="form-control bg-transparent text-white" required pattern="[^\s]+" placeholder="demo"/>
 			</div>
 
 			<div className="form-group">
 			<label>Password</label>
-			<input type="password" name="password" className="form-control" required pattern="[\d\w!@#$%^&*]{4,}" placeholder="demo" />
+			<input type="password" name="password" className="form-control bg-transparent text-white" required minLength="4" placeholder="demo" />
 			</div>
 
 			{!form.ok &&
@@ -43,7 +43,7 @@ export default function Form({ setUser, }) {
 				{form.login ? 'Incorrect Username or Password' : 'Username existed'}
 				</p>
 			}
-			<button type="submit" className="btn btn-dark btn-block">{form.login ? 'Login' : 'Register'}</button>
+			<button type="submit" className="btn btn-light btn-block">{form.login ? 'Login' : 'Register'}</button>
 
 			<hr />
 			<button onClick={handleClick} type="button" className="btn btn-link text-info">{form.login ? 'Register' : 'Login'}</button>
