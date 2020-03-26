@@ -16,5 +16,5 @@ Simple 3D Editor website
 
 * Write documentation
 
-NOTE: Please do not `push` to `master` branch directly, push to working branch (`dev` or `front-end`) then create a `pull` request instead.
+NOTE: Please do not `push` to `master` branch directly, `push` to working branch (`dev` or `front-end`) then create a `pull` request instead.
 
