@@ -3,6 +3,19 @@ import * as BABYLON from '@babylonjs/core/Legacy/legacy';
 import { GLTF2Export, } from '@babylonjs/serializers/glTF';
 import '@babylonjs/loaders';
 
+function handleSelectHelp(mesh, highlight, canvas) {
+	if (mesh && !highlight.hasMesh(mesh)) {
+		const meshSelected = new CustomEvent('meshSelected', { detail: mesh, });
+		canvas.dispatchEvent(meshSelected);
+		highlight.removeAllMeshes();
+		highlight.addMesh(mesh, BABYLON.Color3.Green());
+	} else {
+		const meshUnSelected = new Event('meshUnSelected');
+		canvas.dispatchEvent(meshUnSelected)
+		highlight.removeAllMeshes();
+	}
+}
+
 class Editor extends Component {
 	constructor(props) {
 		super(props);
@@ -18,7 +31,7 @@ class Editor extends Component {
 		this.yScaleRef = createRef();
 		this.zScaleRef = createRef();
 		this.colorRef = createRef();
-		this.state = { mesh: null, uploaded: false, scene: null};
+		this.state = { mesh: null, uploaded: false, scene: null, highlight: null};
 	}
 
 	componentDidMount() {
@@ -31,15 +44,21 @@ class Editor extends Component {
 		canvas.addEventListener('meshUnSelected',
 			() => this.setState({ ...this.state, ...{ mesh: null, }, }));
 		canvas.addEventListener('sceneLoaded',
-			(e) => this.setState({ mesh: null, uploaded: true, scene: e.detail, }));
+			(e) => this.setState({
+				mesh: null,
+				uploaded: true,
+				scene: e.detail.scene,
+				highlight: e.detail.highlight,
+			}));
 
 		// Load files
 		const sceneLoadedCallback = function (sceneFile, scene) {
 			// Add the highlight layer.
-			const hl = new BABYLON.HighlightLayer("hl1", scene);
+			const highlight = new BABYLON.HighlightLayer("hl1", scene);
 
 			// Dispatch sceneLoaded event
-			const sceneLoaded = new CustomEvent('sceneLoaded', { detail: scene, });
+			const sceneLoaded = new CustomEvent('sceneLoaded',
+				{ detail: { scene, highlight, }, });
 			canvas.dispatchEvent(sceneLoaded);
 
 			// Set up camera, light, environment
@@ -53,16 +72,7 @@ class Editor extends Component {
 				switch (evt.type) {
 					case BABYLON.PointerEventTypes.POINTERDOWN:
 						const mesh = evt.pickInfo.pickedMesh;
-						if (mesh && !hl.hasMesh(mesh)) {
-							const meshSelected = new CustomEvent('meshSelected', { detail: mesh, });
-							canvas.dispatchEvent(meshSelected);
-							hl.removeAllMeshes();
-							hl.addMesh(mesh, BABYLON.Color3.Green());
-						} else {
-							const meshUnSelected = new Event('meshUnSelected');
-							canvas.dispatchEvent(meshUnSelected)
-							hl.removeAllMeshes();
-						}
+						handleSelectHelp(mesh, highlight, canvas);
 						break;
 					case BABYLON.PointerEventTypes.POINTERUP:
 						break;
@@ -74,6 +84,8 @@ class Editor extends Component {
 						break;
 				}
 			});
+
+			console.log(scene);
 
 			engine.runRenderLoop(() => scene.render());
 		};
@@ -104,13 +116,14 @@ class Editor extends Component {
 		const handleMove = function () {
 			let mesh = this.state.mesh;
 			let [x, y, z] = [
-					+this.xMoveRef.current.value,
-					+this.yMoveRef.current.value,
-					+this.zMoveRef.current.value
+				+this.xMoveRef.current.value,
+				+this.yMoveRef.current.value,
+				+this.zMoveRef.current.value
 			];
 			if (mesh) {
 				mesh.position = new BABYLON.Vector3(x, y, z);
 			}
+			console.log(this.state.scene);
 
 		}.bind(this);
 
@@ -153,9 +166,16 @@ class Editor extends Component {
 
 		const handleDownload = function () {
 			let scene = this.state.scene;
-			GLTF2Export.GLTFAsync(scene, scene.name).then((gltf) => {
-				gltf.downloadFiles();
+			GLTF2Export.GLBAsync(scene, scene.name).then((glb) => {
+				glb.downloadFiles();
 			});
+		}.bind(this);
+
+		const handleSelect = function (event) {
+			let mesh = this.state.scene.meshes.find(m => m.id === event.target.id);
+			let highlight = this.state.highlight;
+			let canvas = this.canvasRef.current;
+			handleSelectHelp(mesh, highlight, canvas);
 		}.bind(this);
 
 		return (
@@ -231,6 +251,17 @@ class Editor extends Component {
 			}
 
 			</div>
+
+			{ this.state.scene &&
+			<div id="explorer" className="bg-transparent text-secondary overflow-auto">
+				{ this.state.scene.meshes
+					.filter(mesh => mesh.metadata)
+					.map(mesh =>
+						<button onClick={handleSelect} key={mesh.id} id={mesh.id} className="btn btn-block btn-link text-secondary">{mesh.name}</button>)
+				}
+
+			</div>
+	}
 			</>
 		);
 	}
