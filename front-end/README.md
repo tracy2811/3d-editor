@@ -11,17 +11,28 @@ Current frontend is a single webpage using React and Bootstrap. We may need to s
 git clone -b front-end https://github.com/tracy2811/3d-editor.git
 
 # Install back-end dependencies
-pip install -r api/requirements.txt
+cd back-end && npm i
 
 # Install front-end dependencies
-cd front-end && npm i
+cd ../front-end && npm i
 ```
 
 2. Run servers (developement version)
 
+Create `.env` file in back-end directory with format:
+
+```
+SECRET_KEY=ThisIsYourSecretKey
+PORT=8000
+MONGODB=URIToYourMongoDBDatabase
+```
+
+Then you are ready to go.
+
 ```bash
 # Run back-end
-python3 ../api/run.py
+cd ../back-end
+npm start
 
 # Run front-end
 npm start
@@ -31,15 +42,9 @@ Everything is set, now you can start developing.
 
 ## TODO
 
-* Routing
-
-* Update with gRPC api
-
 * Improve UX
 
-* Optimize `requirements.txt` file
-
-* Setup environment
+* Save token
 
 ## Credit
 
