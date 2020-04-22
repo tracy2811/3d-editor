@@ -1,8 +1,9 @@
 import React from 'react';
 
-export default function Nav({ user, setUser}) {
+export default function Nav({ user, setUser, setToken, }) {
 	function handleLogout() {
 		setUser(null);
+		setToken('');
 	}
 	return (
 		<nav className="fixed-top navbar navbar-expand-lg navbar-dark bg-transparent">

@@ -1,12 +1,6 @@
-# 3D Editor
+# 3D Edtior - Backend
 
-Simple 3D Editor website
-
-## Built in
-
-* Front-end: React, Bootstrap, Babylonjs
-
-* Back-end: Express (Nodejs), Mongodb
+Currently, it is RESTish API in express (Nodejs). We may want to change to gRPC api.
 
 ## Setup
 
@@ -69,10 +63,4 @@ Everything is set, now you can start developing.
 * Delete model: DELETE request to `http://locahost:8000/models/FILENAME` with `token`
 
 You can get information about api by making GET request to `http://locahost:8000`.
-
-## Credit
-
-* Icons from [Font Awesome](https://fontawesome.com)
-
-* Background image by Jonatan Pie on Unsplash
 

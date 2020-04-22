@@ -1,8 +1,8 @@
 # 3D Edtior - Frontend
 
-Current frontend is a single webpage using React and Bootstrap and use old api. We may need to separate pages using react-router and keep its update with our back-end.
+Current frontend is a single webpage using React and Bootstrap. We may need to separate pages using react-router and keep its update with our back-end.
 
-## Getting started
+## Setup
 
 1. Download and install dependencies
 
@@ -11,17 +11,28 @@ Current frontend is a single webpage using React and Bootstrap and use old api. 
 git clone -b front-end https://github.com/tracy2811/3d-editor.git
 
 # Install back-end dependencies
-pip install -r api/requirements.txt
+cd back-end && npm i
 
 # Install front-end dependencies
-cd front-end && npm i
+cd ../front-end && npm i
 ```
 
 2. Run servers (developement version)
 
+Create `.env` file in back-end directory with format:
+
+```
+SECRET_KEY=ThisIsYourSecretKey
+PORT=8000
+MONGODB=URIToYourMongoDBDatabase
+```
+
+Then you are ready to go.
+
 ```bash
 # Run back-end
-python3 ../api/run.py
+cd ../back-end
+npm start
 
 # Run front-end
 npm start
@@ -31,15 +42,13 @@ Everything is set, now you can start developing.
 
 ## TODO
 
-* Implement view/edit page
+* Improve UX
 
-* Routing
+* Save token
 
-* Update with gRPC api
+## Credit
 
-* Improve design
+* Icons from [Font Awesome](https://fontawesome.com)
 
-* Optimize `requirements.txt` file
-
-* Setup environment
+* Background image by Jonatan Pie on Unsplash
 

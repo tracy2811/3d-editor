@@ -1,10 +1,9 @@
 form {
 	max-width: 400px;
 	width: 90%;
-	z-index: 1;
 }
 
-html, body, canvas {
+html, body, canvas, #root {
 	width: 100%;
 	height: 100%;
 	margin: 0;
@@ -19,6 +18,15 @@ canvas {
 
 body {
 	background: no-repeat center/cover url("/background.jpg");
+	position: fixed;
+}
+
+.container, .row {
+	height: 100%;
+}
+
+#root {
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 #drag-guide {
@@ -26,5 +34,26 @@ body {
 	top: 40%;
 	left: 0;
 	right: 0;
+}
+
+#edit {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 70%;
+	max-width: 500px;
+	min-width: 300px;
+	z-index: 1040;
+}
+
+#explorer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 10%;
+	max-width: 200px;
+	min-width: 100px;
+	max-height: 50%;
+	z-index: 1040;
 }
 
