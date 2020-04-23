@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "70055d60142b17f790c49a191ca59f3e",
+    "revision": "fba81f58b6a4c6b8d2f5e01a94acf7e2",
     "url": "/3d-editor/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/3d-editor/static/css/2.de424728.chunk.css"
   },
   {
-    "revision": "48a9fca51c7e07a69c63",
-    "url": "/3d-editor/static/css/main.5b59cfa6.chunk.css"
+    "revision": "afc6777744c692f6649c",
+    "url": "/3d-editor/static/css/main.9be6daf8.chunk.css"
   },
   {
     "revision": "88eb121a394f71ab2f57",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/3d-editor/static/js/2.0cf879f8.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "48a9fca51c7e07a69c63",
-    "url": "/3d-editor/static/js/main.76d12514.chunk.js"
+    "revision": "afc6777744c692f6649c",
+    "url": "/3d-editor/static/js/main.6b0a4aea.chunk.js"
   },
   {
     "revision": "68a666b7bd9c2a67a62f",

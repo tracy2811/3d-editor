@@ -1,2 +1,0 @@
-form{max-width:400px;width:90%}#root,body,canvas,html{width:100%;height:100%;margin:0;padding:0}canvas{top:0;left:0}body,canvas{position:fixed}body{background:no-repeat 50%/cover url(/background.jpg)}.container,.row{height:100%}#root{background-color:rgba(0,0,0,.4)}#drag-guide{position:fixed;top:40%;left:0;right:0}#edit{left:0;width:70%;max-width:500px;min-width:300px}#edit,#explorer{position:fixed;bottom:0;z-index:1040}#explorer{right:0;width:10%;max-width:200px;min-width:100px;max-height:50%}
-/*# sourceMappingURL=main.5b59cfa6.chunk.css.map */
